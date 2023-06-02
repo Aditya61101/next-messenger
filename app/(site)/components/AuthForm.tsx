@@ -12,18 +12,21 @@ import axios from 'axios';
 import { signIn, useSession } from 'next-auth/react';
 //toast
 import { toast } from 'react-hot-toast';
+import { useRouter } from "next/navigation";
 
 type Variant = 'LOGIN' | 'REGISTER';
 
 const AuthForm = () => {
     const session = useSession();
+    const router = useRouter();
     const [variant, setVariant] = useState<Variant>('LOGIN');
     const [isLoading, setIsLoading] = useState<boolean>(false);
     useEffect(() => {
         if (session?.status === 'authenticated') {
             console.log(session?.status);
+            router.push('/users');
         }
-    }, [session?.status]);
+    }, [session?.status, router]);
     const toggleVariant = useCallback(() => {
         if (variant === 'LOGIN')
             setVariant('REGISTER');
@@ -49,6 +52,7 @@ const AuthForm = () => {
                     throw new Error("Invalid credentials");
                 } else if (response?.ok) {
                     toast.success("Logged in successfully! 🎉");
+                    router.push('/users');
                 }
             } catch (error) {
                 toast.error("Invalid credentials");
@@ -60,6 +64,7 @@ const AuthForm = () => {
                 const response = await axios.post('/api/register', data);
                 if (response.status === 201) {
                     toast.success("Account created successfully! 🎉");
+                    await signIn('credentials', data);
                     console.log(response.data);
                 } else {
                     throw new Error("Login Failed");
@@ -79,6 +84,7 @@ const AuthForm = () => {
                 throw new Error("Invalid credentials");
             } else if (response?.ok) {
                 toast.success("Logged in successfully! 🎉");
+                router.push('/users');
             }
         } catch (error) {
             toast.error("Invalid credentials");
