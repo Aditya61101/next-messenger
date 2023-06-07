@@ -8,8 +8,9 @@ import { FullConversationType } from "@/typings";
 export default async function ConversationsLayout({ children }: { children: React.ReactNode }) {
     const conversationsPromise: Promise<FullConversationType[]> = getConversations();
     const usersPromise: Promise<User[]> = getUsers();
-    const conversations: FullConversationType[] = await conversationsPromise;
-    const users: User[] = await usersPromise;
+    const [conversations,users] = await Promise.all([conversationsPromise, usersPromise]);
+    // const conversations: FullConversationType[] = await conversationsPromise;
+    // const users: User[] = await usersPromise;
     return (
         //@ts-expect-error Server component
         <Sidebar>
