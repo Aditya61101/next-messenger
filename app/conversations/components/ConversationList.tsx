@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation';
 import ConversationBox from './ConversationBox';
 import { MdOutlineGroupAdd } from 'react-icons/md';
 import { useSession } from 'next-auth/react';
+import GroupChatModal from '@/app/components/Modals/GroupChatModal';
 
 type Props = {
     items: FullConversationType[];
@@ -24,6 +25,11 @@ const ConversationList = ({ items, users, title }: Props) => {
     const { isOpen, conversationId } = useConversation();
     return (
         <>
+            <GroupChatModal
+                users={users}
+                isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+            />
             <aside className={clsx(`
         fixed 
         inset-y-0 

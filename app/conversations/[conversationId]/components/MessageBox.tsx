@@ -5,6 +5,7 @@ import { format } from 'date-fns';
 import { useSession } from 'next-auth/react';
 import React, { useState } from 'react'
 import Image from 'next/image';
+import ImageModal from './ImageModal';
 
 type Props = {
     data: FullMessageType;
@@ -44,7 +45,7 @@ const MessageBox = ({ data, isLast }: Props) => {
                     </div>
                 </div>
                 <div className={messageClass}>
-                    {/* <ImageModal src={data.image} isOpen={imageModalOpen} onClose={() => setImageModalOpen(false)} /> */}
+                    <ImageModal src={data.image} isOpen={imageModalOpen} onClose={() => setImageModalOpen(false)} />
                     {data.image ? (
                         <Image
                             alt="Image"

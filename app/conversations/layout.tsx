@@ -9,8 +9,7 @@ export default async function ConversationsLayout({ children }: { children: Reac
     const conversationsPromise: Promise<FullConversationType[]> = getConversations();
     const usersPromise: Promise<User[]> = getUsers();
     const [conversations,users] = await Promise.all([conversationsPromise, usersPromise]);
-    // const conversations: FullConversationType[] = await conversationsPromise;
-    // const users: User[] = await usersPromise;
+    
     return (
         //@ts-expect-error Server component
         <Sidebar>
@@ -21,3 +20,5 @@ export default async function ConversationsLayout({ children }: { children: Reac
         </Sidebar>
     )
 }
+// const conversations: FullConversationType[] = await conversationsPromise;
+    // const users: User[] = await usersPromise;
