@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  plugins: {
+  experimental: {
     swcPlugins: [["next-superjson-plugin", {}]],
   },
   images: {
