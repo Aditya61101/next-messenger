@@ -1,6 +1,7 @@
 import { getCurrentUser } from "@/app/utils/getCurrentUser";
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/app/libs/prismaDB";
+import { pusherServer } from "@/app/libs/pusher";
 
 type Props = {
     params: {
@@ -34,7 +35,7 @@ export async function POST(_: NextRequest, { params: { conversationId } }: Props
         if (!lastMessage)
             return NextResponse.json({ conversation: conversation }, { status: 200 });
 
-        //update seenBy of last message
+        //update seenBy of the last message
         const updatedMessage = await prisma.message.update({
             where: {
                 id: lastMessage.id
@@ -51,6 +52,19 @@ export async function POST(_: NextRequest, { params: { conversationId } }: Props
                 sender: true
             }
         });
+
+        await pusherServer.trigger(currentUser.email, "conversation:update", {
+            id: conversationId,
+            messages: [updatedMessage]
+        })
+
+        //if the indexOf returns -1, it means the user has not seen the message
+        if (lastMessage.seenIds.indexOf(currentUser.id) !== -1)
+            return NextResponse.json({ conversation }, { status: 200 });
+
+        //this trigger sends the message with updated seenBy to all users in the conversation
+        await pusherServer.trigger(conversationId!, "message:update", updatedMessage);
+        
         return NextResponse.json({ updatedMessage }, { status: 200 });
     } catch (err: any) {
         console.log(err, 'ERROR_MESSAGES_SEEN');

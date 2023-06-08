@@ -5,10 +5,11 @@ import { Dialog, Transition } from '@headlessui/react'
 import { IoClose, IoTrash } from 'react-icons/io5';
 import { format } from 'date-fns';
 import Avatar from '@/app/components/Avatar';
-//hooks
-import useOtherUser from '@/app/hooks/useOtherUser';
 import ConfirmModal from './ConfirmModal';
 import AvatarGroup from '@/app/components/AvatarGroup';
+//hooks
+import useOtherUser from '@/app/hooks/useOtherUser';
+import useActiveList from '@/app/hooks/useActiveList';
 
 type Props = {
     data: Conversation & {
@@ -21,16 +22,21 @@ type Props = {
 const ProfileDrawer = ({ data, isOpen, onClose }: Props) => {
     const [confirmOpen, setConfirmOpen] = useState<boolean>(false);
     const otherUser = useOtherUser(data);
+    const { members } = useActiveList();
+    const isActive = members.indexOf(otherUser?.email!) !== -1;
+
     const joinedDate = useMemo(() => format(new Date(otherUser.createdAt), "PP"), [otherUser.createdAt]);
+
     const title = useMemo(() => {
         return data.name || otherUser.name;
     }, [otherUser.name, data.name]);
+
     const status = useMemo(() => {
         if (data.isGroup)
             return data.users.length + " members";
-        //to be implemented
-        return "Active now";
-    }, [data.isGroup, data.users.length]);
+        return isActive ? "Online" : "Offline";
+    }, [data, isActive]);
+
     return (
         <>
             <ConfirmModal

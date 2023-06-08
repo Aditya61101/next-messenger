@@ -10,6 +10,7 @@ import ConversationBox from './ConversationBox';
 import { MdOutlineGroupAdd } from 'react-icons/md';
 import { useSession } from 'next-auth/react';
 import GroupChatModal from '@/app/components/Modals/GroupChatModal';
+import { pusherClient } from '@/app/libs/pusher';
 
 type Props = {
     items: FullConversationType[];
@@ -23,6 +24,41 @@ const ConversationList = ({ items, users, title }: Props) => {
     const router = useRouter();
     const session = useSession();
     const { isOpen, conversationId } = useConversation();
+    useEffect(() => {
+        if (!session?.data?.user?.email) return;
+
+        pusherClient.subscribe(session?.data?.user?.email!);
+        
+        const conversationHandler = (data: FullConversationType) => {
+            setConversations((current) => {
+                if (current.find((currentConvo) => currentConvo.id === data.id)) return current;
+                return [data, ...current];
+            })
+        }
+        const updateHandler = (data: FullConversationType) => {
+            setConversations((current) => {
+                return current.map((currentConvo) => {
+                    if (currentConvo.id === data.id) return { ...currentConvo, messages: data.messages };
+                    return currentConvo;
+                })
+            })
+        }
+        const deleteHandler = (data: FullConversationType) => {
+            setConversations((current) => {
+                return current.filter((currentConvo) => currentConvo.id !== data.id);
+            })
+            if (conversationId === data.id) router.push('/conversations');
+        }
+        pusherClient.bind("conversation:new", conversationHandler);
+        pusherClient.bind("conversation:update", updateHandler);
+        pusherClient.bind("conversation:delete", deleteHandler);
+        return () => {
+            pusherClient.unsubscribe(session?.data?.user?.email!);
+            pusherClient.unbind("conversation:new", conversationHandler);
+            pusherClient.unbind("conversation:update", updateHandler);
+            pusherClient.unbind("conversation:delete", deleteHandler);
+        }
+    }, [session?.data?.user?.email, conversationId, router]);
     return (
         <>
             <GroupChatModal

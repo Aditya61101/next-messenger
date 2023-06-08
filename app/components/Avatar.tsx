@@ -2,13 +2,15 @@
 import { User } from '@prisma/client';
 import Image from 'next/image';
 import React from 'react'
+import useActiveList from '../hooks/useActiveList';
 
 type Props = {
     user?: User | null;
 }
 
 const Avatar = ({ user }: Props) => {
-    const isActive = true;
+    const { members } = useActiveList();
+    const isActive = members.indexOf(user?.email!) !== -1;
     return (
         <div className='relative'>
             <div className="
