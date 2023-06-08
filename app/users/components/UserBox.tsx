@@ -20,7 +20,7 @@ const UserBox = ({ data }: Props) => {
                 userId: data.id
             });
             if (res.status === 200) {
-                router.push(`/conversations/${res.data.id}`);
+                router.push(`/conversations/${res.data.conversation.id}`);
             } else {
                 throw new Error('Something went wrong');
             }

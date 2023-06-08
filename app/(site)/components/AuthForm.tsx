@@ -62,7 +62,8 @@ const AuthForm = () => {
         } else {
             try {
                 const response = await axios.post('/api/register', data);
-                if (response.status === 201) {
+                console.log(response);
+                if (response.status === 200) {
                     toast.success("Account created successfully! 🎉");
                     await signIn('credentials', data);
                     console.log(response.data);
