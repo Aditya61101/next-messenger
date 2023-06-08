@@ -2,7 +2,7 @@ import { getCurrentUser } from "@/app/utils/getCurrentUser";
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/app/libs/prismaDB";
 
-export default async function POST(req: NextRequest) {
+export async function POST(req: NextRequest) {
     try {
         const body = await req.json();
         const { name, image } = body;

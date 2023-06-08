@@ -7,7 +7,7 @@ type Props = {
         conversationId: string
     }
 }
-export default async function DELETE(_: NextRequest, { params: { conversationId } }: Props) {
+export async function DELETE(_: NextRequest, { params: { conversationId } }: Props) {
     try {
         const currentUser = await getCurrentUser();
         if (!currentUser?.id || !currentUser?.email)
