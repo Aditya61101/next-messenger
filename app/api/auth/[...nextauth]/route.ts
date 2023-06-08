@@ -48,8 +48,11 @@ export const authOptions: AuthOptions = {
         })
     ],
     debug: process.env.NODE_ENV === "development",
-    session:{
+    session: {
         strategy: "jwt",
+    },
+    pages: {
+        signIn: "/",
     },
     secret: process.env.NEXTAUTH_SECRET!,
 }
