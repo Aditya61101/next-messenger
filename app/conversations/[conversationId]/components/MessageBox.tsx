@@ -1,3 +1,4 @@
+"use client";
 import Avatar from '@/app/components/Avatar';
 import { FullMessageType } from '@/typings'
 import clsx from 'clsx';

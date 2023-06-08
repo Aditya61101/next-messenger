@@ -20,7 +20,7 @@ type Props = {
 
 const SettingsModal = ({ isOpen, onClose, currentUser }: Props) => {
     const router = useRouter();
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const {
         register,
         handleSubmit,

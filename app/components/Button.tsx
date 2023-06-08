@@ -1,8 +1,6 @@
-"use client";
-import React from 'react'
 import clsx from "clsx";
 
-interface ButtonProps {
+type Props = {
   type?: "button" | "submit" | "reset" | undefined;
   fullWidth?: boolean;
   children?: React.ReactNode;
@@ -12,12 +10,12 @@ interface ButtonProps {
   disabled?: boolean;
 }
 const Button = ({ type = "button",
-fullWidth,
-children,
-onClick,
-secondary,
-danger,
-disabled,}: ButtonProps) => {
+  fullWidth,
+  children,
+  onClick,
+  secondary,
+  danger,
+  disabled, }: Props) => {
   return (
     <button onClick={onClick} type={type} disabled={disabled} className={clsx(`
       flex 
@@ -37,7 +35,7 @@ disabled,}: ButtonProps) => {
       danger && 'bg-rose-500 hover:bg-rose-600 focus-visible:outline-rose-600',
       !secondary && !danger && 'bg-sky-500 hover:bg-sky-600 focus-visible:outline-sky-600'
     )}>
-        {children}
+      {children}
     </button>
   )
 }

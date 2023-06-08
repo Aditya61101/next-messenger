@@ -3,7 +3,7 @@ import Avatar from '@/app/components/Avatar'
 import useOtherUser from '@/app/hooks/useOtherUser'
 import { Conversation, User } from '@prisma/client'
 import Link from 'next/link'
-import React, { useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { HiEllipsisHorizontal, HiChevronLeft } from 'react-icons/hi2'
 import ProfileDrawer from './ProfileDrawer';
 import AvatarGroup from '@/app/components/AvatarGroup';

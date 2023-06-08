@@ -18,7 +18,7 @@ type Props = {
 
 const GroupChatModal = ({ isOpen,onClose,users }: Props) => {
     const router = useRouter();
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const {
         register,
         handleSubmit,

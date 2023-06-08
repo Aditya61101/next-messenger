@@ -5,7 +5,7 @@ import React from 'react'
 import useActiveList from '../hooks/useActiveList';
 
 type Props = {
-    user?: User | null;
+    user?: User;
 }
 
 const Avatar = ({ user }: Props) => {
